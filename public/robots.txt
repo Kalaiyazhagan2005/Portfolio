@@ -1,0 +1,11 @@
+# Robots.txt for https://kalaiyazhagan.in/
+# Optimized for Googlebot, Bingbot, Applebot, and AI Search Crawlers
+
+User-agent: *
+Allow: /
+Allow: /public/
+Allow: /projects/
+Allow: /kalai-cutout.png
+
+# Sitemap Location
+Sitemap: https://kalaiyazhagan.in/sitemap.xml

@@ -1,0 +1,17 @@
+{
+  "name": "Kalaiyazhagan — Full-Stack Developer & Systems Engineer",
+  "short_name": "Kalai",
+  "description": "Official portfolio of Kalaiyazhagan, Full-Stack Developer & Systems Engineer specializing in distributed backends and 60FPS Three.js WebGL.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f8fa",
+  "theme_color": "#f8f8fa",
+  "icons": [
+    {
+      "src": "/kalai-cutout.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

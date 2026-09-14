@@ -1,0 +1,21 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "C:\\PROGRA~1\\nodejs\\node.exe ./node_modules/vite/bin/vite.js",
+    "build": "C:\\PROGRA~1\\nodejs\\node.exe ./node_modules/vite/bin/vite.js build && C:\\PROGRA~1\\nodejs\\node.exe ./scripts/validate-seo.js",
+    "validate:seo": "C:\\PROGRA~1\\nodejs\\node.exe ./scripts/validate-seo.js",
+    "preview": "C:\\PROGRA~1\\nodejs\\node.exe ./node_modules/vite/bin/vite.js preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "three": "^0.186.0",
+    "vite": "^8.3.0"
+  }
+}
