@@ -5,10 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "C:\\PROGRA~1\\nodejs\\node.exe ./node_modules/vite/bin/vite.js",
-    "build": "C:\\PROGRA~1\\nodejs\\node.exe ./node_modules/vite/bin/vite.js build && C:\\PROGRA~1\\nodejs\\node.exe ./scripts/validate-seo.js",
-    "validate:seo": "C:\\PROGRA~1\\nodejs\\node.exe ./scripts/validate-seo.js",
-    "preview": "C:\\PROGRA~1\\nodejs\\node.exe ./node_modules/vite/bin/vite.js preview"
+    "dev": "vite",
+    "build": "vite build && node ./scripts/validate-seo.js",
+    "validate:seo": "node ./scripts/validate-seo.js",
+    "preview": "vite preview"
   },
   "keywords": [],
   "author": "",
