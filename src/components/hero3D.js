@@ -17,7 +17,9 @@ export function initHero3D() {
     0.1,
     1000
   );
-  camera.position.set(0, 0, 75);
+  const isMobile = () => window.innerWidth < 768;
+  let targetZ = isMobile() ? 110 : 75;
+  camera.position.set(0, 0, targetZ);
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -35,7 +37,7 @@ export function initHero3D() {
     color: 0x828896,
     wireframe: true,
     transparent: true,
-    opacity: 0.35
+    opacity: isMobile() ? 0.18 : 0.35
   });
   const ring1 = new THREE.Mesh(geometry1, material1);
   ring1.rotation.x = Math.PI / 3;
@@ -46,7 +48,7 @@ export function initHero3D() {
     color: 0x9fa4b2,
     wireframe: true,
     transparent: true,
-    opacity: 0.28
+    opacity: isMobile() ? 0.14 : 0.28
   });
   const poly = new THREE.Mesh(geometry2, material2);
   poly.position.set(0, -2, -10);
@@ -85,8 +87,12 @@ export function initHero3D() {
   let animationFrameId = null;
 
   function handleResize() {
+    const mobile = isMobile();
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    targetZ = mobile ? 110 : 75;
+    material1.opacity = mobile ? 0.18 : 0.35;
+    material2.opacity = mobile ? 0.14 : 0.28;
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   }
@@ -106,6 +112,7 @@ export function initHero3D() {
 
     camera.position.x = targetX;
     camera.position.y = targetY;
+    camera.position.z = targetZ;
     camera.lookAt(0, 0, 0);
 
     // Subtle, architectural kinetic motion

@@ -290,7 +290,136 @@ function init3DScrollAnimations() {
     transformPerspective: 1200
   });
 
-  // 2. Kinetic Watermarks Smooth Horizontal Scrub on Scroll
+  // 2. 3D Perspective Roll & Depth Arrival for Section Headlines & Labels
+  document.querySelectorAll('.section-wrapper').forEach((section) => {
+    const label = section.querySelector('.section-label-tag');
+    const headline = section.querySelector('.section-headline');
+    const subP = section.querySelector('.section-sub-p, .section-subheadline');
+
+    if (label) {
+      gsap.from(label, {
+        scrollTrigger: {
+          trigger: label,
+          start: 'top 92%',
+          toggleActions: 'play none none reverse'
+        },
+        rotateX: 25,
+        y: 20,
+        z: -30,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        transformPerspective: 1000
+      });
+    }
+
+    if (headline) {
+      gsap.from(headline, {
+        scrollTrigger: {
+          trigger: headline,
+          start: 'top 88%',
+          toggleActions: 'play none none reverse'
+        },
+        rotateX: 30,
+        y: 45,
+        z: -60,
+        opacity: 0,
+        duration: 1.1,
+        ease: 'power3.out',
+        transformPerspective: 1200,
+        transformOrigin: '50% 100% -50px'
+      });
+
+      // Subtle dynamic 3D tilt tracking during scroll
+      gsap.to(headline, {
+        scrollTrigger: {
+          trigger: section,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1
+        },
+        rotateX: -4,
+        z: 10,
+        transformPerspective: 1200
+      });
+    }
+
+    if (subP) {
+      gsap.from(subP, {
+        scrollTrigger: {
+          trigger: subP,
+          start: 'top 90%',
+          toggleActions: 'play none none reverse'
+        },
+        rotateX: 18,
+        y: 25,
+        z: -20,
+        opacity: 0,
+        duration: 0.9,
+        delay: 0.1,
+        ease: 'power2.out',
+        transformPerspective: 1000
+      });
+    }
+  });
+
+  // 3. About Page 3D Text & Pillars Perspective Scroll
+  const aboutLead = document.querySelector('.about-lead-statement');
+  const aboutBody = document.querySelector('.about-body-statement');
+  if (aboutLead) {
+    gsap.from(aboutLead, {
+      scrollTrigger: {
+        trigger: aboutLead,
+        start: 'top 88%',
+        toggleActions: 'play none none reverse'
+      },
+      rotateX: 20,
+      y: 30,
+      z: -30,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+      transformPerspective: 1000
+    });
+  }
+
+  if (aboutBody) {
+    gsap.from(aboutBody, {
+      scrollTrigger: {
+        trigger: aboutBody,
+        start: 'top 88%',
+        toggleActions: 'play none none reverse'
+      },
+      rotateX: 16,
+      y: 25,
+      opacity: 0,
+      duration: 1,
+      delay: 0.15,
+      ease: 'power3.out',
+      transformPerspective: 1000
+    });
+  }
+
+  const pillars = document.querySelectorAll('.engineering-pillars-grid .pillar-item');
+  if (pillars.length > 0) {
+    gsap.from(pillars, {
+      scrollTrigger: {
+        trigger: '.engineering-pillars-grid',
+        start: 'top 86%',
+        toggleActions: 'play none none reverse'
+      },
+      rotateX: 22,
+      y: 40,
+      z: -40,
+      opacity: 0,
+      stagger: 0.12,
+      duration: 0.9,
+      ease: 'power3.out',
+      transformPerspective: 1000
+    });
+  }
+
+  // 4. Kinetic Watermarks Smooth Horizontal Scrub on Scroll
   document.querySelectorAll('.kinetic-watermark').forEach((mark, idx) => {
     gsap.to(mark, {
       scrollTrigger: {
@@ -303,7 +432,7 @@ function init3DScrollAnimations() {
     });
   });
 
-  // 3. Services 3D Pill Cards Entrance Tilt
+  // 5. Services 3D Pill Cards Entrance Tilt
   document.querySelectorAll('.service-card').forEach((card) => {
     gsap.from(card, {
       scrollTrigger: {
@@ -319,7 +448,7 @@ function init3DScrollAnimations() {
     });
   });
 
-  // 4. Works 3D Slider Stage Dynamic Tilt on Scroll
+  // 6. Works 3D Slider Stage Dynamic Tilt on Scroll
   gsap.fromTo(
     '.slider-3d-stage',
     { rotateX: 16, scale: 0.94, transformPerspective: 1200 },
@@ -336,7 +465,7 @@ function init3DScrollAnimations() {
     }
   );
 
-  // 5. Spec Card 3D Scroll Float
+  // 7. Spec Card 3D Scroll Float
   const specCard = document.querySelector('.spec-card');
   if (specCard) {
     gsap.from(specCard, {
@@ -353,7 +482,7 @@ function init3DScrollAnimations() {
     });
   }
 
-  // 6. FAQ Items 3D Perspective Tilt on Scroll
+  // 8. FAQ Items 3D Perspective Tilt on Scroll
   document.querySelectorAll('.faq-item').forEach((item) => {
     gsap.from(item, {
       scrollTrigger: {
