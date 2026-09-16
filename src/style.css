@@ -570,33 +570,35 @@ body.cursor-active .custom-cursor-follower {
 .hero-right-col {
   position: relative;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
-  min-height: 440px;
+  height: auto;
+  align-self: center;
 }
 
 .hero-portrait-wrap {
   position: relative;
   width: 100%;
   max-width: 440px;
-  height: 64dvh;
-  max-height: 640px;
+  height: auto;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
 }
 
 .hero-portrait-picture {
-  display: contents;
+  display: block;
+  width: 100%;
+  line-height: 0;
 }
 
 .hero-cutout-img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: min(65vh, 560px);
   object-fit: contain;
-  object-position: bottom center;
+  object-position: center center;
   filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1));
   mask-image: linear-gradient(to bottom, black 86%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 86%, transparent 100%);
@@ -626,13 +628,13 @@ body.cursor-active .custom-cursor-follower {
 }
 
 .badge-reliability {
-  bottom: 40px;
+  bottom: 24px;
   left: -20px;
 }
 
 .badge-projects {
-  top: 50px;
-  right: -10px;
+  top: 36px;
+  right: -16px;
 }
 
 .badge-header {
@@ -2183,15 +2185,18 @@ body.cursor-active .custom-cursor-follower {
     line-height: 1.5;
   }
   .hero-right-col {
-    min-height: 420px;
-    height: 100%;
+    height: auto;
+    align-self: center;
     align-items: center;
     justify-content: center;
+    min-height: auto;
   }
   .hero-portrait-wrap {
-    height: 54dvh;
-    max-height: 500px;
+    height: auto;
     max-width: 380px;
+  }
+  .hero-cutout-img {
+    max-height: min(60vh, 480px);
   }
   .badge-reliability {
     bottom: 24px;
@@ -2326,13 +2331,16 @@ body.cursor-active .custom-cursor-follower {
     margin-top: 14px;
     width: 100%;
     justify-content: center;
+    order: 2;
   }
   .hero-portrait-wrap {
-    height: 42dvh;
-    max-height: 360px;
+    height: auto;
     width: 100%;
     max-width: 290px;
     margin: 0 auto;
+  }
+  .hero-cutout-img {
+    max-height: 360px;
   }
   /* Floating Badges Anchored Safely Around Shoulders - NEVER Overlapping Hair or Face */
   .badge-projects {
@@ -2581,10 +2589,12 @@ body.cursor-active .custom-cursor-follower {
     font-size: clamp(1.65rem, 7.2vw, 2.15rem);
   }
   .hero-portrait-wrap {
-    height: 36dvh;
-    max-height: 290px;
+    height: auto;
     max-width: 230px;
     margin: 0 auto 12px;
+  }
+  .hero-cutout-img {
+    max-height: 290px;
   }
   /* Anchored neatly below the chin/hairline */
   .badge-reliability {
@@ -2649,9 +2659,12 @@ body.cursor-active .custom-cursor-follower {
     font-size: 0.82rem;
   }
   .hero-portrait-wrap {
-    height: 32dvh;
-    max-height: 260px;
+    height: auto;
     max-width: 210px;
+    margin: 0 auto 10px;
+  }
+  .hero-cutout-img {
+    max-height: 250px;
   }
   .badge-reliability {
     bottom: -4px;
