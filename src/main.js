@@ -43,6 +43,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 10. GSAP 3D Scroll Perspective Animations
   init3DScrollAnimations();
+
+  // 11. Refresh ScrollTrigger when images, fonts, and window finish loading
+  window.addEventListener('load', () => {
+    ScrollTrigger.refresh();
+  });
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      ScrollTrigger.refresh();
+    });
+  }
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 150);
+  });
 });
 
 /**
@@ -119,26 +138,27 @@ function renderServices(cursor) {
   cards.forEach((card) => {
     const header = card.querySelector('.service-header');
     header.addEventListener('click', () => {
-      const isCurrentlyExpanded = card.classList.contains('is-expanded');
+      const wasExpanded = card.classList.contains('is-expanded');
+      const serviceId = card.getAttribute('data-service-id');
 
-      // Pause all cards on state change
+      // Accordion mode: collapse others
       cards.forEach((c) => {
         c.classList.remove('is-expanded');
-        const id = c.getAttribute('data-service-id');
-        if (serviceCanvases[id] && serviceCanvases[id].pause) {
-          serviceCanvases[id].pause();
+        const cId = c.getAttribute('data-service-id');
+        if (serviceCanvases[cId] && serviceCanvases[cId].pause) {
+          serviceCanvases[cId].pause();
         }
       });
 
-      if (!isCurrentlyExpanded) {
+      if (!wasExpanded) {
         card.classList.add('is-expanded');
-        const sId = card.getAttribute('data-service-id');
-        if (serviceCanvases[sId]) {
-          if (serviceCanvases[sId].resume) serviceCanvases[sId].resume();
-          if (serviceCanvases[sId].resize) {
-            setTimeout(() => serviceCanvases[sId].resize(), 200);
-          }
+        if (serviceCanvases[serviceId] && serviceCanvases[serviceId].resume) {
+          serviceCanvases[serviceId].resume();
         }
+        // Refresh ScrollTrigger as accordion expansion changes page height
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 320);
       }
 
       if (cursor && cursor.attachHoverListeners) {
@@ -202,7 +222,8 @@ function initNavigation() {
       document.body.style.overflow = isOpen ? 'hidden' : '';
     });
 
-    document.querySelectorAll('.mobile-nav-link').forEach((link) => {
+    const mobileLinks = mobileOverlay.querySelectorAll('.mobile-nav-link');
+    mobileLinks.forEach((link) => {
       link.addEventListener('click', () => {
         mobileOverlay.classList.remove('is-open');
         mobileToggle.classList.remove('is-active');
@@ -213,56 +234,70 @@ function initNavigation() {
 }
 
 /**
- * GSAP Entrance Animations
+ * Smooth GSAP Page Entrance Choreography
  */
 function runEntranceAnimations() {
-  gsap.from('.site-header', {
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.from('.site-header', {
     y: -40,
     opacity: 0,
-    duration: 1.2,
-    ease: 'power3.out'
+    duration: 0.9,
+    delay: 0.1
   });
 
-  gsap.from('.giant-line', {
-    y: 80,
-    opacity: 0,
-    duration: 1.4,
-    stagger: 0.15,
-    ease: 'power4.out',
-    delay: 0.2
-  });
+  tl.from(
+    '.giant-line',
+    {
+      y: 80,
+      opacity: 0,
+      duration: 1.1,
+      stagger: 0.1
+    },
+    '-=0.6'
+  );
 
-  gsap.from('.hero-portrait-wrap', {
-    y: 80,
-    opacity: 0,
-    duration: 1.4,
-    ease: 'power3.out',
-    delay: 0.4
-  });
+  tl.from(
+    '.hero-portrait-wrap',
+    {
+      scale: 0.94,
+      opacity: 0,
+      duration: 1.1
+    },
+    '-=0.8'
+  );
 
-  gsap.from('.hero-left-col > *', {
-    y: 30,
-    opacity: 0,
-    duration: 1,
-    stagger: 0.12,
-    ease: 'power3.out',
-    delay: 0.6
-  });
+  tl.from(
+    '.hero-left-col > *',
+    {
+      y: 28,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.08
+    },
+    '-=0.9'
+  );
 
-  gsap.from('.floating-hero-badge', {
-    scale: 0.8,
-    opacity: 0,
-    duration: 1,
-    stagger: 0.2,
-    ease: 'back.out(1.5)',
-    delay: 0.9
-  });
+  tl.from(
+    '.floating-hero-badge',
+    {
+      scale: 0.8,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.2,
+      ease: 'back.out(1.5)'
+    },
+    '-=0.5'
+  );
 }
 
 /**
  * GSAP 3D Scroll Perspective Animations
+ * Gracefully adapts between full 3D desktop perspective and rock-solid 2D mobile readability
  */
 function init3DScrollAnimations() {
+  const isMobile = window.innerWidth <= 820;
+
   // 1. Hero 3D Depth & Tilt on Scroll
   gsap.to('.hero-giant-bg-text', {
     scrollTrigger: {
@@ -271,152 +306,199 @@ function init3DScrollAnimations() {
       end: 'bottom top',
       scrub: 1
     },
-    y: 100,
-    rotateX: 18,
+    y: isMobile ? 35 : 80,
+    rotateX: isMobile ? 0 : 16,
     scale: 0.94,
-    transformPerspective: 1000,
+    transformPerspective: isMobile ? 0 : 1000,
     opacity: 0.25
   });
 
-  gsap.to('.hero-portrait-wrap', {
-    scrollTrigger: {
-      trigger: '#home',
-      start: 'top top',
-      end: 'bottom top',
-      scrub: 1.2
-    },
-    y: -30,
-    rotateY: -6,
-    transformPerspective: 1200
-  });
+  if (!isMobile) {
+    gsap.to('.hero-portrait-wrap', {
+      scrollTrigger: {
+        trigger: '#home',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1.2
+      },
+      y: -30,
+      rotateY: -6,
+      transformPerspective: 1200
+    });
+  }
 
-  // 2. 3D Perspective Roll & Depth Arrival for Section Headlines & Labels
+  // 2. Perspective Roll & Depth Arrival for Section Headlines & Labels
   document.querySelectorAll('.section-wrapper').forEach((section) => {
     const label = section.querySelector('.section-label-tag');
     const headline = section.querySelector('.section-headline');
     const subP = section.querySelector('.section-sub-p, .section-subheadline');
 
     if (label) {
-      gsap.from(label, {
-        scrollTrigger: {
-          trigger: label,
-          start: 'top 92%',
-          toggleActions: 'play none none reverse'
-        },
-        rotateX: 25,
-        y: 20,
-        z: -30,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        transformPerspective: 1000
-      });
+      gsap.fromTo(
+        label,
+        { y: 14, opacity: isMobile ? 0.6 : 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+          clearProps: isMobile ? 'all' : '',
+          scrollTrigger: {
+            trigger: label,
+            start: 'top 96%',
+            once: true
+          }
+        }
+      );
     }
 
     if (headline) {
-      gsap.from(headline, {
-        scrollTrigger: {
-          trigger: headline,
-          start: 'top 88%',
-          toggleActions: 'play none none reverse'
-        },
-        rotateX: 30,
-        y: 45,
-        z: -60,
-        opacity: 0,
-        duration: 1.1,
-        ease: 'power3.out',
-        transformPerspective: 1200,
-        transformOrigin: '50% 100% -50px'
-      });
+      if (isMobile) {
+        // Fail-safe smooth fade on mobile that never leaves text hidden or tilted
+        gsap.fromTo(
+          headline,
+          { y: 18, opacity: 0.5 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.65,
+            ease: 'power2.out',
+            clearProps: 'all',
+            scrollTrigger: {
+              trigger: headline,
+              start: 'top 95%',
+              once: true
+            }
+          }
+        );
+      } else {
+        gsap.from(headline, {
+          scrollTrigger: {
+            trigger: headline,
+            start: 'top 90%',
+            toggleActions: 'play none none reverse'
+          },
+          rotateX: 22,
+          y: 36,
+          z: -40,
+          opacity: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          transformPerspective: 1200
+        });
 
-      // Subtle dynamic 3D tilt tracking during scroll
-      gsap.to(headline, {
-        scrollTrigger: {
-          trigger: section,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1
-        },
-        rotateX: -4,
-        z: 10,
-        transformPerspective: 1200
-      });
+        // Continuous 3D tilt tracking ONLY on desktop screens to prevent mobile text misalignment
+        gsap.to(headline, {
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1
+          },
+          rotateX: -3,
+          z: 10,
+          transformPerspective: 1200
+        });
+      }
     }
 
     if (subP) {
-      gsap.from(subP, {
-        scrollTrigger: {
-          trigger: subP,
-          start: 'top 90%',
-          toggleActions: 'play none none reverse'
-        },
-        rotateX: 18,
-        y: 25,
-        z: -20,
-        opacity: 0,
-        duration: 0.9,
-        delay: 0.1,
-        ease: 'power2.out',
-        transformPerspective: 1000
-      });
+      gsap.fromTo(
+        subP,
+        { y: 14, opacity: isMobile ? 0.6 : 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.65,
+          ease: 'power2.out',
+          clearProps: isMobile ? 'all' : '',
+          scrollTrigger: {
+            trigger: subP,
+            start: 'top 95%',
+            once: true
+          }
+        }
+      );
     }
   });
 
-  // 3. About Page 3D Text & Pillars Perspective Scroll
+  // 3. About Page Text & Pillars Scroll
   const aboutLead = document.querySelector('.about-lead-statement');
-  const aboutBody = document.querySelector('.about-body-statement');
+  const aboutBody = document.querySelector('.about-body-p');
   if (aboutLead) {
-    gsap.from(aboutLead, {
-      scrollTrigger: {
-        trigger: aboutLead,
-        start: 'top 88%',
-        toggleActions: 'play none none reverse'
-      },
-      rotateX: 20,
-      y: 30,
-      z: -30,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-      transformPerspective: 1000
-    });
+    gsap.fromTo(
+      aboutLead,
+      { y: 16, opacity: isMobile ? 0.6 : 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        ease: 'power2.out',
+        clearProps: isMobile ? 'all' : '',
+        scrollTrigger: {
+          trigger: aboutLead,
+          start: 'top 95%',
+          once: true
+        }
+      }
+    );
   }
 
   if (aboutBody) {
-    gsap.from(aboutBody, {
-      scrollTrigger: {
-        trigger: aboutBody,
-        start: 'top 88%',
-        toggleActions: 'play none none reverse'
-      },
-      rotateX: 16,
-      y: 25,
-      opacity: 0,
-      duration: 1,
-      delay: 0.15,
-      ease: 'power3.out',
-      transformPerspective: 1000
-    });
+    gsap.fromTo(
+      aboutBody,
+      { y: 14, opacity: isMobile ? 0.6 : 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        ease: 'power2.out',
+        clearProps: isMobile ? 'all' : '',
+        scrollTrigger: {
+          trigger: aboutBody,
+          start: 'top 95%',
+          once: true
+        }
+      }
+    );
   }
 
   const pillars = document.querySelectorAll('.engineering-pillars-grid .pillar-item');
   if (pillars.length > 0) {
-    gsap.from(pillars, {
-      scrollTrigger: {
-        trigger: '.engineering-pillars-grid',
-        start: 'top 86%',
-        toggleActions: 'play none none reverse'
-      },
-      rotateX: 22,
-      y: 40,
-      z: -40,
-      opacity: 0,
-      stagger: 0.12,
-      duration: 0.9,
-      ease: 'power3.out',
-      transformPerspective: 1000
-    });
+    if (isMobile) {
+      // Mobile: Immediately render and subtly settle in with clearProps to guarantee 100% visibility
+      gsap.fromTo(
+        pillars,
+        { y: 14, opacity: 0.6 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.08,
+          duration: 0.55,
+          ease: 'power2.out',
+          clearProps: 'all',
+          scrollTrigger: {
+            trigger: '.engineering-pillars-grid',
+            start: 'top 96%',
+            once: true
+          }
+        }
+      );
+    } else {
+      gsap.from(pillars, {
+        scrollTrigger: {
+          trigger: '.engineering-pillars-grid',
+          start: 'top 88%',
+          toggleActions: 'play none none reverse'
+        },
+        y: 30,
+        rotateX: 16,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: 'power3.out'
+      });
+    }
   }
 
   // 4. Kinetic Watermarks Smooth Horizontal Scrub on Scroll
@@ -428,73 +510,132 @@ function init3DScrollAnimations() {
         end: 'bottom top',
         scrub: 1.5
       },
-      x: idx % 2 === 0 ? -90 : 90
+      x: idx % 2 === 0 ? (isMobile ? -30 : -90) : (isMobile ? 30 : 90)
     });
   });
 
   // 5. Services 3D Pill Cards Entrance Tilt
   document.querySelectorAll('.service-card').forEach((card) => {
-    gsap.from(card, {
-      scrollTrigger: {
-        trigger: card,
-        start: 'top 90%',
-        end: 'top 65%',
-        scrub: 0.8
-      },
-      rotateX: 12,
-      y: 40,
-      opacity: 0.5,
-      transformPerspective: 1000
-    });
+    if (isMobile) {
+      gsap.fromTo(
+        card,
+        { y: 16, opacity: 0.6 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.55,
+          ease: 'power2.out',
+          clearProps: 'all',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 96%',
+            once: true
+          }
+        }
+      );
+    } else {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 90%',
+          end: 'top 65%',
+          scrub: 0.8
+        },
+        rotateX: 12,
+        y: 40,
+        opacity: 0.5,
+        transformPerspective: 1000
+      });
+    }
   });
 
-  // 6. Works 3D Slider Stage Dynamic Tilt on Scroll
-  gsap.fromTo(
-    '.slider-3d-stage',
-    { rotateX: 16, scale: 0.94, transformPerspective: 1200 },
-    {
-      scrollTrigger: {
-        trigger: '#works',
-        start: 'top 85%',
-        end: 'top 35%',
-        scrub: 1
-      },
-      rotateX: 0,
-      scale: 1,
-      ease: 'power2.out'
-    }
-  );
+  // 6. Works 3D Slider Stage Dynamic Tilt on Scroll (Desktop only)
+  if (!isMobile) {
+    gsap.fromTo(
+      '.slider-3d-stage',
+      { rotateX: 16, scale: 0.94, transformPerspective: 1200 },
+      {
+        scrollTrigger: {
+          trigger: '#works',
+          start: 'top 85%',
+          end: 'top 35%',
+          scrub: 1
+        },
+        rotateX: 0,
+        scale: 1,
+        ease: 'power2.out'
+      }
+    );
+  }
 
   // 7. Spec Card 3D Scroll Float
   const specCard = document.querySelector('.spec-card');
   if (specCard) {
-    gsap.from(specCard, {
-      scrollTrigger: {
-        trigger: '#about',
-        start: 'top 75%',
-        end: 'top 40%',
-        scrub: 0.8
-      },
-      rotateY: 10,
-      y: 40,
-      opacity: 0.5,
-      transformPerspective: 1000
-    });
+    if (isMobile) {
+      gsap.fromTo(
+        specCard,
+        { y: 16, opacity: 0.6 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.55,
+          ease: 'power2.out',
+          clearProps: 'all',
+          scrollTrigger: {
+            trigger: specCard,
+            start: 'top 96%',
+            once: true
+          }
+        }
+      );
+    } else {
+      gsap.from(specCard, {
+        scrollTrigger: {
+          trigger: '#about',
+          start: 'top 75%',
+          end: 'top 40%',
+          scrub: 0.8
+        },
+        rotateY: 10,
+        y: 40,
+        opacity: 0.5,
+        transformPerspective: 1000
+      });
+    }
   }
 
   // 8. FAQ Items 3D Perspective Tilt on Scroll
   document.querySelectorAll('.faq-item').forEach((item) => {
-    gsap.from(item, {
-      scrollTrigger: {
-        trigger: item,
-        start: 'top 92%',
-        end: 'top 75%',
-        scrub: 0.6
-      },
-      rotateX: 8,
-      y: 24,
-      opacity: 0.6,
-      transformPerspective: 1000
-    });
+    if (isMobile) {
+      gsap.fromTo(
+        item,
+        { y: 14, opacity: 0.6 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.5,
+          ease: 'power2.out',
+          clearProps: 'all',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 96%',
+            once: true
+          }
+        }
+      );
+    } else {
+      gsap.from(item, {
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 92%',
+          end: 'top 75%',
+          scrub: 0.6
+        },
+        rotateX: 8,
+        y: 24,
+        opacity: 0.6,
+        transformPerspective: 1000
+      });
+    }
   });
 }
