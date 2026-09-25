@@ -5,10 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && node ./scripts/validate-seo.js",
-    "validate:seo": "node ./scripts/validate-seo.js",
-    "preview": "vite preview"
+    "dev": "bun --bun vite",
+    "build": "bun --bun vite build && bun ./scripts/validate-seo.js",
+    "validate:seo": "bun ./scripts/validate-seo.js",
+    "preview": "bun --bun vite preview"
   },
   "keywords": [],
   "author": "",

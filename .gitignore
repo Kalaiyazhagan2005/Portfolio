@@ -4,6 +4,7 @@ bun.lock
 .pnp
 .pnp.js
 
+details/
 # Production Build Output
 dist/
 dist-ssr/

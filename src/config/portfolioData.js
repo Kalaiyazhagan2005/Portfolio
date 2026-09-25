@@ -1,49 +1,78 @@
 /**
  * Kalai - Portfolio Configuration & Engineering Data
- * Strictly authentic technical data, devoid of generic AI boilerplate.
+ * Aligned with verified technical resume details.
  */
 
 export const portfolioData = {
   personal: {
     name: "KALAI",
     fullName: "Kalaiyazhagan N",
-    role: "Full-Stack Developer & Systems Engineer",
-    statusText: "Available for select contracts & full-time engineering roles",
-    location: "Chennai, India",
+    role: "Full Stack Developer | AI & Data Science · Java · Python · React",
+    statusText: "Available for full-time engineering roles & contracts",
+    location: "Kallakurichi / Chennai, Tamil Nadu, India",
     timezone: "Asia/Kolkata (IST)",
+    phone: "+91 6379754684",
     email: "kalaiyazhagan.dev@gmail.com",
     github: "https://github.com/Kalaiyazhagan2005",
     linkedin: "https://www.linkedin.com/in/kalaiyazhagan",
-    telegram: "https://t.me",
-    resumeUrl: "#contact",
-    headline: "BUILDING RELIABLE SOFTWARE WITH PRECISION, PERFORMANCE, AND PURPOSE.",
-    shortBio: "I approach engineering as a systems problem: understand how the pieces interact, remove unnecessary complexity, and build software that remains reliable as it grows.",
+    leetcode: "https://leetcode.com/u/Kalaiyazhagan/",
+    portfolio: "https://kalaiyazhagan.in",
+    resumeViewUrl: "/Kalai_resume.pdf",
+    resumeDownloadUrl: "/Kalaiyazhagan_Resume.pdf",
+    headline: "BUILDING HIGH-PERFORMANCE WEB APPLICATIONS & BACKEND SYSTEMS.",
+    shortBio: "Artificial Intelligence & Data Science student and Full Stack Developer with hands-on expertise in Java, Python, C, REST APIs, React, and MySQL. 150+ DSA problems solved on LeetCode with experience building and shipping web apps, real-time systems, and RESTful services.",
     extendedBio: [
-      "From backend services and databases to real-time applications and interactive interfaces, I focus on building systems that are predictable, efficient, and maintainable.",
-      "I care about what happens beneath the interface just as much as what the user sees — from data consistency and API design to performance, deployment, and the details that make an application feel fast."
+      "Artificial Intelligence and Data Science student and Full Stack Developer with hands-on expertise in Java, Python, C, REST APIs, React, and MySQL. Solved 150+ DSA problems on LeetCode across arrays, strings, trees, recursion, hashing, and dynamic programming.",
+      "Built and shipped multiple full-stack projects spanning web apps, ML-driven prediction systems, and RESTful services. Strong foundation in OOP, DBMS, Operating Systems, and Computer Networks, with internship experience in full-stack development and CI/CD fundamentals."
     ]
   },
 
+  education: {
+    degree: "B. Tech, Artificial Intelligence and Data Science",
+    institution: "Muthayammal College of Engineering, Rasipuram",
+    period: "2023 – Present",
+    gpa: "GPA: 7.5",
+    highlight: "Artificial Intelligence, Data Structures & Algorithms, Machine Learning & Systems Architecture"
+  },
+
+  internship: {
+    role: "Full Stack Web Development Intern (Training)",
+    company: "Accent Techno Soft",
+    year: "2025",
+    bullets: [
+      "Built full-stack web applications end-to-end using React, Spring Boot, and MySQL, translating requirements into working features.",
+      "Designed and implemented RESTful APIs following MVC architecture; integrated frontend and backend via HTTP and JSON.",
+      "Used Git for collaborative version control and gained hands-on exposure to CI/CD deployment fundamentals."
+    ]
+  },
+
+  certifications: [
+    { title: "Oracle Cloud Infrastructure Certified Foundations Associate", issuer: "Oracle", year: "2024" },
+    { title: "Certification of Python (Basics)", issuer: "HackerRank", year: "2024" },
+    { title: "Full-Stack Web Development Course", issuer: "Udemy", year: "2025" },
+    { title: "Smart India Hackathon (Participation)", issuer: "SIH", year: "2025, 2026" }
+  ],
+
   metrics: [
     {
-      value: "Node.js & Python",
-      label: "Backend Services",
-      description: "Asynchronous processing, real-time WebSockets, and structured service architecture"
+      value: "Java, Python & C",
+      label: "Core Languages",
+      description: "OOP architecture, algorithm problem-solving, and 150+ LeetCode DSA solved"
     },
     {
-      value: "React & Three.js",
-      label: "Interactive Web",
-      description: "Responsive web interfaces and hardware-accelerated WebGL experiences"
+      value: "React & REST APIs",
+      label: "Frontend & Full Stack",
+      description: "Modular React applications, state management, and seamless HTTP/JSON integration"
     },
     {
-      value: "PostgreSQL & Redis",
-      label: "Data Engineering",
-      description: "Relational data modeling, caching patterns, and high-integrity state"
+      value: "Spring Boot & FastAPI",
+      label: "Backend & WebSockets",
+      description: "MVC architecture, asynchronous endpoints, real-time WebSockets, and microservices"
     },
     {
-      value: "Docker & Linux",
-      label: "Production Systems",
-      description: "Containerized environments, NGINX reverse proxy, and PM2 process management"
+      value: "MySQL & PostgreSQL",
+      label: "Databases & DevOps",
+      description: "Relational schema design, query optimization, Docker fundamentals, and CI/CD"
     }
   ],
 
@@ -51,14 +80,14 @@ export const portfolioData = {
     {
       id: "01",
       code: "BACKEND_SYSTEMS",
-      title: "DISTRIBUTED BACKEND SYSTEMS",
-      tagline: "Designing reliable backend services with Node.js and Python.",
-      description: "Focusing on structured service architecture, asynchronous processing, real-time communication with WebSockets, and predictable endpoints that remain maintainable as systems grow.",
+      title: "BACKEND & RESTFUL APIS",
+      tagline: "Designing scalable backend services with Spring Boot, Python & FastAPI.",
+      description: "Focusing on MVC architecture, RESTful API design, asynchronous processing, real-time communication with WebSockets, and database persistence with MySQL and PostgreSQL.",
       deliverables: [
-        "Node.js (Express) & Python (FastAPI) Backend Services",
+        "Spring Boot & Java REST API Architecture",
+        "FastAPI & Flask Asynchronous Backend Services",
         "Real-Time WebSocket Communication & Event Channels",
-        "Asynchronous Task Processing & Queue Pipelines",
-        "Scalable Architecture & Structured Service Design"
+        "JWT-Based Authentication & Role-Based Access Control"
       ],
       shapeType: "octahedron",
       accentColor: "#78dcff"
@@ -66,12 +95,12 @@ export const portfolioData = {
     {
       id: "02",
       code: "INTERACTIVE_WEB",
-      title: "INTERACTIVE WEB EXPERIENCES",
-      tagline: "Building responsive interfaces with React, Three.js, WebGL, and GSAP.",
-      description: "Creating responsive web applications and interactive 3D visual experiences, keeping usability, rendering performance, and clean component patterns at the center.",
+      title: "FULL STACK WEB APPLICATIONS",
+      tagline: "Building responsive, modern web interfaces with React, JavaScript & TypeScript.",
+      description: "Creating responsive web applications end-to-end with React and modern CSS, translating business logic and requirements into high-performance user experiences.",
       deliverables: [
-        "Modern Component Architectures with React & Vite",
-        "Interactive 3D Visualizations & WebGL Canvases (Three.js)",
+        "Modern Component Architectures with React.js & Vite",
+        "Type-Safe Client Interfaces with TypeScript",
         "Smooth Motion Choreography & Transitions with GSAP",
         "Responsive, Accessible Layouts Optimized for Mobile & Desktop"
       ],
@@ -81,14 +110,14 @@ export const portfolioData = {
     {
       id: "03",
       code: "DATA_ENGINEERING",
-      title: "DATA & DATABASE ENGINEERING",
-      tagline: "Designing structured data systems with PostgreSQL, MongoDB, and Redis.",
-      description: "Focusing on data integrity, query optimization, schema indexing, caching patterns, and efficient access paths to maintain consistent application state.",
+      title: "DATABASE & QUERY OPTIMIZATION",
+      tagline: "Designing high-integrity relational schemas with MySQL & PostgreSQL.",
+      description: "Focusing on data integrity, ACID compliance, query optimization, indexing, and persistent database storage to maintain consistent, scalable application state.",
       deliverables: [
-        "Relational Schema Design & Migration Management (PostgreSQL)",
-        "In-Memory Caching & Session Storage (Redis)",
-        "Document Storage & Scalable Collections (MongoDB)",
-        "Query Tuning, Indexing, and Connection Pooling"
+        "Relational Schema Design & Migration Management (MySQL & PostgreSQL)",
+        "Query Tuning, Indexing, and Performance Optimization",
+        "Microservice Data Separation & Edge-Case Architecture",
+        "JDBC & ORM Persistence Integrations"
       ],
       shapeType: "torus",
       accentColor: "#b482ff"
@@ -96,14 +125,14 @@ export const portfolioData = {
     {
       id: "04",
       code: "INFRASTRUCTURE",
-      title: "DEPLOYMENT & INFRASTRUCTURE",
-      tagline: "Turning applications into production-ready systems.",
-      description: "Deploying and managing reliable environments using Docker, Linux, NGINX, and PM2, with an emphasis on practical deployment workflows, process supervision, and maintainability.",
+      title: "DEVOPS, GIT & CI/CD",
+      tagline: "Production-ready workflows with Git, Linux, and Docker fundamentals.",
+      description: "Deploying and managing reliable development workflows with Git collaborative version control, Linux environments, and CI/CD deployment fundamentals.",
       deliverables: [
-        "Containerization with Docker & Multi-Service Compose",
-        "Linux VPS Administration & Server Hardening",
-        "Reverse Proxy Routing & SSL Termination with NGINX",
-        "Process Supervision & Restart Policies (PM2, systemd)"
+        "Collaborative Git & GitHub Version Control",
+        "CI/CD Pipeline Fundamentals & Automated Deployment",
+        "Containerization Basics with Docker",
+        "Automated Testing (Selenium) & Unit Testing"
       ],
       shapeType: "icosahedron",
       accentColor: "#ff8c3c"
@@ -112,107 +141,93 @@ export const portfolioData = {
 
   projects: [
     {
-      id: "edutur",
+      id: "storybabe",
       number: "01",
-      title: "EDUTUR LMS PLATFORM",
-      category: "FULL-STACK EDUCATION PLATFORM",
+      title: "STORY BABE - SOCIAL PLATFORM",
+      category: "FULL-STACK SOCIAL MEDIA PLATFORM",
       year: "2024",
-      summary: "Comprehensive education management platform designed for student lifecycle handling, interactive course workflows, and academic assessment.",
-      image: "/projects/edutur.png",
-      tags: ["React", "Node.js", "Express", "PostgreSQL", "Redis", "PM2"],
-      metrics: "Full-Stack Learning Architecture",
+      summary: "Full-stack web application for users to post personal experiences and stories, socialize, and dynamically generate custom post images matching their narratives.",
+      image: "/projects/storybabe.png",
+      tags: ["React JS", "TypeScript", "Tailwind CSS", "PostgreSQL", "REST API"],
+      metrics: "Microservice Architecture & Image AI",
       architecture: [
-        "Full-stack architecture featuring a responsive React client and modular Express.js backend services.",
-        "Role-based access control for students, faculty, and administrators with secure token authentication.",
-        "PostgreSQL relational data modeling for persistent course records, student progress, and evaluation."
+        "Developed a full-stack web application for users to post their personal experiences and socialize with other people.",
+        "Designed and implemented microservice architecture for edge cases, integrating PostgreSQL for reliable, scalable data storage.",
+        "Implemented image generation model to let users generate post images according to their personal essays and stories.",
+        "Secured user data by implementing robust Authentication and added customer care support for users."
       ],
-      liveUrl: "https://edutur.in",
-      githubUrl: "https://github.com/Kalaiyazhagan2005"
+      liveUrl: "https://storybabe.kalaiyazhagan.in",
+      githubUrl: "https://github.com/Kalaiyazhagan2005/StoryBabe"
     },
     {
       id: "bucket-chat",
       number: "02",
       title: "BUCKET CHAT ENGINE",
-      category: "REAL-TIME WEBSOCKET SERVER",
+      category: "REAL-TIME COMMUNICATION SYSTEM",
       year: "2024",
-      summary: "Real-time communication server built in Python, enabling instant WebSocket message broadcasting with room-based partitioning and connection handling.",
+      summary: "High-performance real-time communication platform built with Python, Flask, FastAPI, and WebSockets, enabling instant chat rooms, whispers, and host moderation.",
       image: "/projects/bucket-chat.png",
-      tags: ["Python", "FastAPI", "WebSockets", "Redis", "AsyncIO"],
-      metrics: "Real-Time WebSocket Server",
+      tags: ["Python", "FastAPI", "Flask", "WebSockets", "JWT", "JavaScript"],
+      metrics: "Real-Time WebSocket & Host Controls",
       architecture: [
-        "Asynchronous WebSocket pipeline leveraging Python asyncio for non-blocking I/O.",
-        "Room-based message bucketing for partitioned channel subscriptions and isolated state.",
-        "Fast, lightweight payload serialization and clean connection lifecycle management."
+        "Built a high performance, real-time communication platform that enables users to create and join chat rooms.",
+        "Implemented JWT-based authentication and authorization with role-based host controls for muting, kicking, banning users, locking rooms and enabling broadcast-only mode.",
+        "Built asynchronous RESTful APIs and WebSocket communication using FastAPI for real-time messaging, direct whispers, typing indicators, reactions, member updates, and chat history exports.",
+        "Built a responsive three-column interface with live member tracking, capacity monitor and host moderation."
       ],
-      liveUrl: "#",
+      liveUrl: "https://bucketchat.kalaiyazhagan.in",
       githubUrl: "https://github.com/Kalaiyazhagan2005/bucket-chat"
     },
     {
-      id: "storybabe",
-      number: "03",
-      title: "STORYBABE SOCIAL PLATFORM",
-      category: "COMMUNITY WEB PLATFORM",
-      year: "2024",
-      summary: "Community experience-sharing web platform in TypeScript, connecting users through personal narratives, shared thoughts, and open discussions.",
-      image: "/projects/storybabe.png",
-      tags: ["TypeScript", "React", "Node.js", "MongoDB", "Express"],
-      metrics: "Social Community Platform",
-      architecture: [
-        "TypeScript-driven architecture ensuring type safety across client interfaces and backend endpoints.",
-        "Responsive UI for reading, composing, and categorizing story threads.",
-        "Document-based data storage for flexible narrative content and user interactions."
-      ],
-      liveUrl: "#",
-      githubUrl: "https://github.com/Kalaiyazhagan2005/StoryBabe"
-    },
-    {
       id: "chess-engine",
-      number: "04",
-      title: "CHESS ENGINE",
-      category: "ALGORITHMIC SEARCH & GAME ENGINE",
-      year: "2023",
-      summary: "Algorithmic chess engine and interactive board built with JavaScript, implementing 64-bit bitboard state, minimax search, and positional evaluation.",
+      number: "03",
+      title: "SOVEREIGN CHESS ENGINE",
+      category: "ALGORITHMIC C++20 GAME ENGINE",
+      year: "2024",
+      summary: "High-performance chess engine utilizing C++20 bitboards, Zobrist hashing, and an advanced minimax search tree connected via UCI to a Node.js web server and browser UI.",
       image: "/projects/chess-engine.png",
-      tags: ["JavaScript", "HTML5 Canvas", "Algorithms", "WebSockets"],
-      metrics: "Algorithmic Minimax Search",
+      tags: ["C++20", "Node.js", "JavaScript", "HTML5 Canvas", "Algorithms"],
+      metrics: "Alpha-Beta Pruning & Bitboards",
       architecture: [
-        "64-bit integer bitboard representation for efficient move generation and board evaluation.",
-        "Minimax search algorithm with alpha-beta pruning for tactical evaluation.",
-        "Interactive browser chessboard interface with move validation and real-time visual feedback."
+        "Developed a high-performance chess engine using C++20 bitboards, optimized move generation, Zobrist hashing, and complete Chess rule validation.",
+        "Implemented an advanced search system with alpha-beta pruning, iterative deepening, quiescence search, transposition tables, Null-move pruning, and late-move reductions.",
+        "Built a Node.js web server with Universal Chess Interface (UCI) to connect the native C++ engine with a browser-based chess app.",
+        "Designed responsive chess interface supporting player vs AI, Pass & Play, AI vs Player, FEN/PGN management, move history, and live engine evaluation."
       ],
       liveUrl: "#",
       githubUrl: "https://github.com/Kalaiyazhagan2005/chess-engine"
     },
     {
-      id: "retrieval-game",
-      number: "05",
-      title: "RETRIEVAL GAME",
-      category: "INTERACTIVE BROWSER GAME",
-      year: "2023",
-      summary: "Interactive browser-based game developed with modern JavaScript, focusing on smooth frame rendering, event-driven player controls, and score tracking.",
-      image: "/projects/retrieval-game.png",
-      tags: ["JavaScript", "HTML5 Canvas", "CSS3", "DOM Events"],
-      metrics: "Interactive Gameplay Engine",
+      id: "edutur",
+      number: "04",
+      title: "EDUTUR LMS PLATFORM",
+      category: "FULL-STACK EDUCATION PLATFORM",
+      year: "2024",
+      summary: "Full-stack learning management platform handling student lifecycles, interactive course workflows, role-based authentication, and academic assessment.",
+      image: "/projects/edutur.png",
+      tags: ["React", "Spring Boot", "MySQL", "REST API", "Java"],
+      metrics: "Enterprise Full-Stack Architecture",
       architecture: [
-        "Event-driven game loop handling inputs, collision detection, and score progression.",
-        "Hardware-accelerated HTML5 Canvas rendering for smooth visual animations.",
-        "Lightweight modular JavaScript structure without external heavy dependencies."
+        "Full-stack architecture featuring a responsive React client and robust backend services following MVC architecture.",
+        "Role-based access control for students, faculty, and administrators with secure token authentication.",
+        "MySQL relational data modeling and query optimization for persistent course records, student progress, and evaluation."
       ],
-      liveUrl: "#",
-      githubUrl: "https://github.com/Kalaiyazhagan2005/retrival-game"
+      liveUrl: "https://edutur.in",
+      githubUrl: "https://github.com/Kalaiyazhagan2005"
     }
   ],
 
   techStack: [
-    { category: "Languages", items: ["TypeScript", "JavaScript (ESNext)", "Python", "SQL", "HTML5/CSS3"] },
-    { category: "Frontend", items: ["React", "Three.js (WebGL)", "GSAP", "Vite", "Tailwind CSS", "Vanilla JS"] },
-    { category: "Backend", items: ["Node.js", "Express", "FastAPI", "Python AsyncIO", "RESTful APIs", "WebSockets"] },
-    { category: "Databases & Cache", items: ["PostgreSQL", "Redis Pub/Sub", "MongoDB", "Connection Pooling"] },
-    { category: "DevOps & Cloud", items: ["Docker", "Docker Compose", "Linux VPS", "NGINX", "PM2", "Git / GitHub Actions"] }
+    { category: "Programming Languages", items: ["Java", "Python", "C", "JavaScript (ESNext)", "TypeScript"] },
+    { category: "Web Technologies", items: ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Three.js", "GSAP"] },
+    { category: "Backend & APIs", items: ["Spring Boot", "REST API Design", "FastAPI", "Flask", "MVC Architecture", "JDBC", "Node.js"] },
+    { category: "Databases & Storage", items: ["MySQL", "Query Optimization", "PostgreSQL", "Redis"] },
+    { category: "Core CS & Testing", items: ["Data Structures & Algorithms (150+ LeetCode)", "OOP", "DBMS", "Operating Systems", "Computer Networks", "Selenium", "Unit Testing"] },
+    { category: "Tools & DevOps", items: ["Linux", "Git", "GitHub", "VS Code", "Figma", "Docker (fundamentals)", "CI/CD"] }
   ],
 
   tickerItems: [
-    "REACT", "NODE.JS", "TYPESCRIPT", "THREE.JS (WEBGL)", "PYTHON", "POSTGRESQL",
-    "REDIS", "DOCKER", "FASTAPI", "GSAP MOTION", "NGINX", "WEBSOCKETS", "PM2"
+    "JAVA", "PYTHON", "REACT.JS", "SPRING BOOT", "MYSQL", "REST APIS", "FASTAPI",
+    "POSTGRESQL", "C++20", "DOCKER", "LINUX", "GIT", "SELENIUM", "LEETCODE 150+"
   ]
 };

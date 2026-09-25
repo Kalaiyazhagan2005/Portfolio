@@ -7,13 +7,22 @@ import { initHero3D } from './components/hero3D.js';
 import { initService3D } from './components/service3D.js';
 import { initProjects } from './components/projects.js';
 import { initContact } from './components/contact.js';
+import { initTravelingLetters } from './components/travelingLetters.js';
+import { initAbout3D } from './components/about3D.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Initialize Custom Cursor & Hero 3D background
+  // 1. Initialize Custom Cursor, Hero 3D background & Kinetic Traveling Letters
   const cursor = initCustomCursor();
   initHero3D();
+  initTravelingLetters();
+
+  // 1b. Initialize About Section 3D Neural Matrix Canvas
+  const aboutCanvas = document.getElementById('about-3d-canvas');
+  if (aboutCanvas) {
+    initAbout3D(aboutCanvas);
+  }
 
   // 2. Render Marquee Ticker
   renderMarquee();
@@ -247,17 +256,6 @@ function runEntranceAnimations() {
   });
 
   tl.from(
-    '.giant-line',
-    {
-      y: 80,
-      opacity: 0,
-      duration: 1.1,
-      stagger: 0.1
-    },
-    '-=0.6'
-  );
-
-  tl.from(
     '.hero-portrait-wrap',
     {
       scale: 0.94,
@@ -279,13 +277,14 @@ function runEntranceAnimations() {
   );
 
   tl.from(
-    '.floating-hero-badge',
+    '.hero-skills-strip .skill-pill, .hero-location-badge',
     {
-      scale: 0.8,
+      scale: 0.88,
+      y: 14,
       opacity: 0,
-      duration: 1,
-      stagger: 0.2,
-      ease: 'back.out(1.5)'
+      duration: 0.8,
+      stagger: 0.06,
+      ease: 'back.out(1.4)'
     },
     '-=0.5'
   );
@@ -299,19 +298,6 @@ function init3DScrollAnimations() {
   const isMobile = window.innerWidth <= 820;
 
   // 1. Hero 3D Depth & Tilt on Scroll
-  gsap.to('.hero-giant-bg-text', {
-    scrollTrigger: {
-      trigger: '#home',
-      start: 'top top',
-      end: 'bottom top',
-      scrub: 1
-    },
-    y: isMobile ? 35 : 80,
-    rotateX: isMobile ? 0 : 16,
-    scale: 0.94,
-    transformPerspective: isMobile ? 0 : 1000,
-    opacity: 0.25
-  });
 
   if (!isMobile) {
     gsap.to('.hero-portrait-wrap', {
@@ -333,7 +319,7 @@ function init3DScrollAnimations() {
     const headline = section.querySelector('.section-headline');
     const subP = section.querySelector('.section-sub-p, .section-subheadline');
 
-    if (label) {
+    if (label && !label.classList.contains('about-flight-dock')) {
       gsap.fromTo(
         label,
         { y: 14, opacity: isMobile ? 0.6 : 0 },
@@ -372,33 +358,22 @@ function init3DScrollAnimations() {
           }
         );
       } else {
-        gsap.from(headline, {
-          scrollTrigger: {
-            trigger: headline,
-            start: 'top 90%',
-            toggleActions: 'play none none reverse'
-          },
-          rotateX: 22,
-          y: 36,
-          z: -40,
-          opacity: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          transformPerspective: 1200
-        });
-
-        // Continuous 3D tilt tracking ONLY on desktop screens to prevent mobile text misalignment
-        gsap.to(headline, {
-          scrollTrigger: {
-            trigger: section,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1
-          },
-          rotateX: -3,
-          z: 10,
-          transformPerspective: 1200
-        });
+        gsap.fromTo(
+          headline,
+          { y: 20, opacity: 0.7 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.65,
+            ease: 'power2.out',
+            clearProps: 'all',
+            scrollTrigger: {
+              trigger: headline,
+              start: 'top 95%',
+              once: true
+            }
+          }
+        );
       }
     }
 
@@ -422,9 +397,10 @@ function init3DScrollAnimations() {
     }
   });
 
-  // 3. About Page Text & Pillars Scroll
-  const aboutLead = document.querySelector('.about-lead-statement');
-  const aboutBody = document.querySelector('.about-body-p');
+  // 3. About Section Sub-elements Scroll & 3D Cards
+  const aboutLead = document.querySelector('.about-lead-p');
+  const aboutHighlights = document.querySelector('.about-highlights-row');
+
   if (aboutLead) {
     gsap.fromTo(
       aboutLead,
@@ -444,18 +420,18 @@ function init3DScrollAnimations() {
     );
   }
 
-  if (aboutBody) {
+  if (aboutHighlights) {
     gsap.fromTo(
-      aboutBody,
+      aboutHighlights,
       { y: 14, opacity: isMobile ? 0.6 : 0 },
       {
         y: 0,
         opacity: 1,
-        duration: 0.7,
+        duration: 0.65,
         ease: 'power2.out',
         clearProps: isMobile ? 'all' : '',
         scrollTrigger: {
-          trigger: aboutBody,
+          trigger: aboutHighlights,
           start: 'top 95%',
           once: true
         }
@@ -463,58 +439,121 @@ function init3DScrollAnimations() {
     );
   }
 
-  const pillars = document.querySelectorAll('.engineering-pillars-grid .pillar-item');
-  if (pillars.length > 0) {
+  // 3D Perspective Roll on Resume & Info Cards
+  const resumeCards = document.querySelectorAll('.resume-exp-card, .resume-info-card');
+  if (resumeCards.length > 0) {
     if (isMobile) {
-      // Mobile: Immediately render and subtly settle in with clearProps to guarantee 100% visibility
       gsap.fromTo(
-        pillars,
-        { y: 14, opacity: 0.6 },
+        resumeCards,
+        { y: 18, opacity: 0.6 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power2.out',
+          clearProps: 'all',
+          scrollTrigger: {
+            trigger: '.about-cards-col',
+            start: 'top 92%',
+            once: true
+          }
+        }
+      );
+    } else {
+      gsap.from(resumeCards, {
+        scrollTrigger: {
+          trigger: '.about-cards-col',
+          start: 'top 85%',
+          toggleActions: 'play none none reverse'
+        },
+        y: 28,
+        rotateX: 12,
+        opacity: 0,
+        stagger: 0.14,
+        duration: 0.8,
+        ease: 'power3.out',
+        transformPerspective: 1000
+      });
+    }
+  }
+
+  // 3D Stagger Entrance on Technical Skill Matrix Pills
+  const techPills = document.querySelectorAll('.about-tech-pills-grid .tech-item-pill');
+  if (techPills.length > 0) {
+    gsap.from(techPills, {
+      scrollTrigger: {
+        trigger: '.about-tech-pills-grid',
+        start: 'top 92%',
+        toggleActions: 'play none none reverse'
+      },
+      scale: 0.85,
+      y: 12,
+      opacity: 0,
+      stagger: 0.03,
+      duration: 0.5,
+      ease: 'back.out(1.4)'
+    });
+  }
+
+  // About 3D Sticky Viewport Card Entrance
+  const about3DCard = document.querySelector('.about-3d-card-wrap');
+  if (about3DCard && !isMobile) {
+    gsap.from(about3DCard, {
+      scrollTrigger: {
+        trigger: '.about-main-grid',
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      },
+      y: 40,
+      rotateY: 8,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+      transformPerspective: 1200
+    });
+  }
+
+  const approachCards = document.querySelectorAll('.approach-step-card');
+  if (approachCards.length > 0) {
+    if (isMobile) {
+      gsap.fromTo(
+        approachCards,
+        { y: 16, opacity: 0.6 },
         {
           y: 0,
           opacity: 1,
           stagger: 0.08,
-          duration: 0.55,
+          duration: 0.6,
           ease: 'power2.out',
           clearProps: 'all',
           scrollTrigger: {
-            trigger: '.engineering-pillars-grid',
+            trigger: '.about-approach-cards-grid',
             start: 'top 96%',
             once: true
           }
         }
       );
     } else {
-      gsap.from(pillars, {
+      gsap.from(approachCards, {
         scrollTrigger: {
-          trigger: '.engineering-pillars-grid',
+          trigger: '.about-approach-cards-grid',
           start: 'top 88%',
           toggleActions: 'play none none reverse'
         },
-        y: 30,
-        rotateX: 16,
+        y: 32,
+        rotateX: 18,
+        z: -25,
         opacity: 0,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: 'power3.out'
+        stagger: 0.12,
+        duration: 0.85,
+        ease: 'power3.out',
+        transformPerspective: 1000
       });
     }
   }
 
-  // 4. Kinetic Watermarks Smooth Horizontal Scrub on Scroll
-  document.querySelectorAll('.kinetic-watermark').forEach((mark, idx) => {
-    gsap.to(mark, {
-      scrollTrigger: {
-        trigger: mark.parentElement,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1.5
-      },
-      x: idx % 2 === 0 ? (isMobile ? -30 : -90) : (isMobile ? 30 : 90)
-    });
-  });
-
-  // 5. Services 3D Pill Cards Entrance Tilt
+  // 4. Services 3D Pill Cards Entrance Tilt
   document.querySelectorAll('.service-card').forEach((card) => {
     if (isMobile) {
       gsap.fromTo(
@@ -568,41 +607,6 @@ function init3DScrollAnimations() {
     );
   }
 
-  // 7. Spec Card 3D Scroll Float
-  const specCard = document.querySelector('.spec-card');
-  if (specCard) {
-    if (isMobile) {
-      gsap.fromTo(
-        specCard,
-        { y: 16, opacity: 0.6 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.55,
-          ease: 'power2.out',
-          clearProps: 'all',
-          scrollTrigger: {
-            trigger: specCard,
-            start: 'top 96%',
-            once: true
-          }
-        }
-      );
-    } else {
-      gsap.from(specCard, {
-        scrollTrigger: {
-          trigger: '#about',
-          start: 'top 75%',
-          end: 'top 40%',
-          scrub: 0.8
-        },
-        rotateY: 10,
-        y: 40,
-        opacity: 0.5,
-        transformPerspective: 1000
-      });
-    }
-  }
 
   // 8. FAQ Items 3D Perspective Tilt on Scroll
   document.querySelectorAll('.faq-item').forEach((item) => {
