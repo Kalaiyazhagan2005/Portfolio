@@ -216,17 +216,15 @@ export function initHero3D() {
     color: 0x9fa4b2,
     wireframe: true,
     transparent: true,
-    opacity: isMobile() ? 0.10 : 0.18
+    opacity: isMobile() ? 0 : 0.18
   });
   const poly = new THREE.Mesh(geometry2, material2);
   poly.position.set(0, -2, -10);
+  poly.visible = !isMobile();
   scene.add(poly);
 
-  // Architectural perspective floor grid in subtle light platinum (Compact)
-  const gridHelper = new THREE.GridHelper(110, 28, 0xb0b5c0, 0xd8dce4);
-  gridHelper.position.set(0, -26, -18);
-  gridHelper.rotation.x = 0.08;
-  scene.add(gridHelper);
+  ring1.visible = !isMobile();
+  stickerGroup.visible = !isMobile();
 
   // Mouse tilt interaction with fluid damping
   let mouseX = 0;
@@ -293,8 +291,11 @@ export function initHero3D() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     targetZ = mobile ? 100 : 75;
-    material1.opacity = mobile ? 0.12 : 0.22;
-    material2.opacity = mobile ? 0.10 : 0.18;
+    material1.opacity = mobile ? 0 : 0.22;
+    material2.opacity = mobile ? 0 : 0.18;
+    ring1.visible = !mobile;
+    stickerGroup.visible = !mobile;
+    poly.visible = !mobile;
     stickerSprites.forEach((sprite) => {
       const spriteSize = mobile ? 3.0 : 4.4;
       sprite.scale.set(spriteSize, spriteSize, 1);
@@ -333,8 +334,6 @@ export function initHero3D() {
 
     poly.rotation.x = elapsedTime * 0.025;
     poly.rotation.y = elapsedTime * 0.03;
-
-    gridHelper.position.z = -20 + Math.sin(elapsedTime * 0.2) * 2;
 
     // --- Real-Time Dynamic Occlusion: Check if 3D ring is backside of specific text ---
     ring1.updateMatrixWorld(true);

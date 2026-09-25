@@ -478,22 +478,27 @@ function init3DScrollAnimations() {
     }
   }
 
-  // 3D Stagger Entrance on Technical Skill Matrix Pills
+  // Stagger Entrance on Technical Skill Matrix Pills
   const techPills = document.querySelectorAll('.about-tech-pills-grid .tech-item-pill');
   if (techPills.length > 0) {
-    gsap.from(techPills, {
-      scrollTrigger: {
-        trigger: '.about-tech-pills-grid',
-        start: 'top 92%',
-        toggleActions: 'play none none reverse'
-      },
-      scale: 0.85,
-      y: 12,
-      opacity: 0,
-      stagger: 0.03,
-      duration: 0.5,
-      ease: 'back.out(1.4)'
-    });
+    gsap.fromTo(
+      techPills,
+      { scale: 0.92, y: 8, opacity: isMobile ? 0.7 : 0.4 },
+      {
+        scale: 1,
+        y: 0,
+        opacity: 1,
+        stagger: 0.03,
+        duration: 0.45,
+        ease: 'power2.out',
+        clearProps: 'all',
+        scrollTrigger: {
+          trigger: '.about-tech-pills-grid',
+          start: 'top 96%',
+          once: true
+        }
+      }
+    );
   }
 
   // About 3D Sticky Viewport Card Entrance
