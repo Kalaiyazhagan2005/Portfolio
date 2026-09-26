@@ -16,7 +16,7 @@ export const portfolioData = {
     github: "https://github.com/Kalaiyazhagan2005",
     linkedin: "https://www.linkedin.com/in/kalaiyazhagan",
     instagram: "https://www.instagram.com/kalaiyazhagan007/",
-    leetcode: "https://leetcode.com/u/Kalaiyazhagan/",
+    leetcode: "https://leetcode.com/u/kalaiyazhagan23/",
     portfolio: "https://kalaiyazhagan.in",
     resumeViewUrl: "/Kalai_resume.pdf",
     resumeDownloadUrl: "/Kalaiyazhagan_Resume.pdf",
