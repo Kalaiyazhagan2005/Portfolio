@@ -445,14 +445,34 @@ function init3DScrollAnimations() {
     if (isMobile) {
       gsap.fromTo(
         resumeCards,
-        { y: 18, opacity: 0.6 },
+        { y: 16, opacity: 0.8 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.6,
+          duration: 0.5,
           stagger: 0.1,
           ease: 'power2.out',
           clearProps: 'all',
+          scrollTrigger: {
+            trigger: '.about-cards-col',
+            start: 'top 95%',
+            once: true
+          }
+        }
+      );
+    } else {
+      gsap.fromTo(
+        resumeCards,
+        { y: 22, rotateX: 6, opacity: 0.7 },
+        {
+          y: 0,
+          rotateX: 0,
+          opacity: 1,
+          stagger: 0.12,
+          duration: 0.7,
+          ease: 'power2.out',
+          clearProps: 'all',
+          transformPerspective: 1000,
           scrollTrigger: {
             trigger: '.about-cards-col',
             start: 'top 92%',
@@ -460,21 +480,6 @@ function init3DScrollAnimations() {
           }
         }
       );
-    } else {
-      gsap.from(resumeCards, {
-        scrollTrigger: {
-          trigger: '.about-cards-col',
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        },
-        y: 28,
-        rotateX: 12,
-        opacity: 0,
-        stagger: 0.14,
-        duration: 0.8,
-        ease: 'power3.out',
-        transformPerspective: 1000
-      });
     }
   }
 
