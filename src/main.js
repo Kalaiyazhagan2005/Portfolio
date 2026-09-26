@@ -228,6 +228,7 @@ function initNavigation() {
     mobileToggle.addEventListener('click', () => {
       const isOpen = mobileOverlay.classList.toggle('is-open');
       mobileToggle.classList.toggle('is-active', isOpen);
+      document.body.classList.toggle('menu-open', isOpen);
       document.body.style.overflow = isOpen ? 'hidden' : '';
     });
 
@@ -236,6 +237,7 @@ function initNavigation() {
       link.addEventListener('click', () => {
         mobileOverlay.classList.remove('is-open');
         mobileToggle.classList.remove('is-active');
+        document.body.classList.remove('menu-open');
         document.body.style.overflow = '';
       });
     });
