@@ -18,7 +18,7 @@ export function initHero3D() {
     1000
   );
   const isMobile = () => window.innerWidth < 768;
-  let targetZ = isMobile() ? 110 : 75;
+  let targetZ = isMobile() ? 72 : 75;
   camera.position.set(0, 0, targetZ);
 
   const renderer = new THREE.WebGLRenderer({
@@ -38,11 +38,8 @@ export function initHero3D() {
     color: 0x828896,
     wireframe: true,
     transparent: true,
-    opacity: isMobile() ? 0.12 : 0.22
+    opacity: isMobile() ? 0.20 : 0.22
   });
-  const ring1 = new THREE.Mesh(geometry1, material1);
-  ring1.rotation.x = Math.PI / 3;
-  scene.add(ring1);
 
   // --- Tech Sticker Badges Orbiting Along the 3D Kinetic Ring (Pure Logos Only - Zero Circle Background) ---
   const stickersData = [
@@ -188,14 +185,16 @@ export function initHero3D() {
     });
 
     const sprite = new THREE.Sprite(spriteMaterial);
-    const spriteSize = isMobileView ? 3.4 : 4.8;
+    const spriteSize = isMobileView ? 2.4 : 4.4;
     sprite.scale.set(spriteSize, spriteSize, 1);
     return sprite;
   }
 
+  const ring1 = new THREE.Mesh(geometry1, material1);
+  ring1.rotation.x = Math.PI / 3;
+
   const stickerGroup = new THREE.Group();
   stickerGroup.rotation.x = Math.PI / 3;
-  scene.add(stickerGroup);
 
   const stickerSprites = [];
   const numStickers = stickersData.length;
@@ -216,15 +215,28 @@ export function initHero3D() {
     color: 0x9fa4b2,
     wireframe: true,
     transparent: true,
-    opacity: isMobile() ? 0 : 0.18
+    opacity: isMobile() ? 0.14 : 0.18
   });
   const poly = new THREE.Mesh(geometry2, material2);
   poly.position.set(0, -2, -10);
-  poly.visible = !isMobile();
-  scene.add(poly);
 
-  ring1.visible = !isMobile();
-  stickerGroup.visible = !isMobile();
+  const heroMeshGroup = new THREE.Group();
+  scene.add(heroMeshGroup);
+  heroMeshGroup.add(ring1);
+  heroMeshGroup.add(stickerGroup);
+  heroMeshGroup.add(poly);
+
+  const updateMeshScale = () => {
+    const mobile = isMobile();
+    const mScale = mobile ? 0.54 : 1.0;
+    heroMeshGroup.scale.set(mScale, mScale, mScale);
+    heroMeshGroup.position.set(0, mobile ? 2.0 : 0, 0);
+  };
+  updateMeshScale();
+
+  ring1.visible = true;
+  stickerGroup.visible = true;
+  poly.visible = true;
 
   // Mouse tilt interaction with fluid damping
   let mouseX = 0;
@@ -290,14 +302,15 @@ export function initHero3D() {
     const mobile = isMobile();
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    targetZ = mobile ? 100 : 75;
-    material1.opacity = mobile ? 0 : 0.22;
-    material2.opacity = mobile ? 0 : 0.18;
-    ring1.visible = !mobile;
-    stickerGroup.visible = !mobile;
-    poly.visible = !mobile;
+    targetZ = mobile ? 72 : 75;
+    updateMeshScale();
+    material1.opacity = mobile ? 0.20 : 0.22;
+    material2.opacity = mobile ? 0.14 : 0.18;
+    ring1.visible = true;
+    stickerGroup.visible = true;
+    poly.visible = true;
     stickerSprites.forEach((sprite) => {
-      const spriteSize = mobile ? 3.0 : 4.4;
+      const spriteSize = mobile ? 2.4 : 4.4;
       sprite.scale.set(spriteSize, spriteSize, 1);
       sprite.material.opacity = 1.0;
     });
@@ -334,6 +347,8 @@ export function initHero3D() {
 
     poly.rotation.x = elapsedTime * 0.025;
     poly.rotation.y = elapsedTime * 0.03;
+
+    heroMeshGroup.updateMatrixWorld(true);
 
     // --- Real-Time Dynamic Occlusion: Check if 3D ring is backside of specific text ---
     ring1.updateMatrixWorld(true);

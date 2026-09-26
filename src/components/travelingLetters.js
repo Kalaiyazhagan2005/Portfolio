@@ -172,7 +172,11 @@ export function initTravelingLetters() {
     const scrollY = window.scrollY || window.pageYOffset || 0;
 
     LETTERS_CONFIG.forEach((cfg) => {
-      const srcEl = sourceElements[cfg.key];
+      let srcEl = sourceElements[cfg.key];
+      if (!srcEl) {
+        srcEl = document.querySelector(`.kinetic-source-char[data-char-key="${cfg.key}"]`);
+        if (srcEl) sourceElements[cfg.key] = srcEl;
+      }
       const dockEl = dockElements[cfg.key];
       const flightEl = flightElements[cfg.key];
 
@@ -587,5 +591,13 @@ export function initTravelingLetters() {
         ensureRafRunning();
       }
     }
+  });
+
+  window.addEventListener('hero-name-typed', () => {
+    document.querySelectorAll('.kinetic-source-char').forEach((el) => {
+      const k = el.getAttribute('data-char-key');
+      if (k) sourceElements[k] = el;
+    });
+    measureCoordinates();
   });
 }

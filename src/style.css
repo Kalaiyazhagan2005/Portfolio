@@ -558,6 +558,46 @@ body.menu-open .floating-action-fab {
   display: inline-block;
 }
 
+/* Hero Typewriter Effect */
+.hero-typewriter-name {
+  display: inline-flex;
+  align-items: baseline;
+  position: relative;
+}
+
+.typing-cursor {
+  display: inline-block;
+  margin-left: 3px;
+  color: var(--accent-cyan);
+  -webkit-text-fill-color: var(--accent-cyan);
+  font-weight: 300;
+  opacity: 1;
+  animation: blinkCursor 0.75s steps(2, start) infinite;
+  user-select: none;
+}
+
+@keyframes blinkCursor {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.typing-cursor.is-done {
+  animation: blinkFadeOut 1.2s forwards 2.5s;
+}
+
+@keyframes blinkFadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .hero-bio-p {
   font-size: 0.98rem;
   color: var(--text-secondary);

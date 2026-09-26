@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initAbout3D(aboutCanvas);
   }
 
+  // 1c. Hero Name Typewriter Animation
+  initHeroTypewriter();
+
   // 2. Render Marquee Ticker
   renderMarquee();
 
@@ -189,6 +192,66 @@ function initNavigation() {
       });
     });
   }
+}
+
+/**
+ * Hero Name Typewriter Animation
+ * Automatically types out "Kalaiyazhagan" on page entrance with authentic cadence
+ */
+function initHeroTypewriter() {
+  const container = document.getElementById('hero-typing-name');
+  if (!container) return;
+
+  const targetName = 'Kalaiyazhagan';
+  const textEl = container.querySelector('.typed-text');
+  const cursorEl = container.querySelector('.typing-cursor');
+  if (!textEl) return;
+
+  textEl.textContent = '';
+  if (cursorEl) cursorEl.style.opacity = '1';
+
+  let charIndex = 0;
+  let isDone = false;
+  let timeoutId = null;
+
+  function finishTyping() {
+    if (isDone) return;
+    isDone = true;
+    if (timeoutId) clearTimeout(timeoutId);
+    textEl.innerHTML = `K<span class="kinetic-source-char" data-char-key="a">a</span>laiyazhagan`;
+    if (cursorEl) {
+      cursorEl.classList.add('is-done');
+    }
+    window.dispatchEvent(new CustomEvent('hero-name-typed'));
+  }
+
+  // If user scrolls before typing finishes, finish immediately so traveling letters don't miss coordinates
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!isDone && window.scrollY > 40) {
+        finishTyping();
+      }
+    },
+    { once: true, passive: true }
+  );
+
+  const initialDelay = 500;
+
+  timeoutId = setTimeout(() => {
+    function typeNextChar() {
+      if (isDone) return;
+      if (charIndex < targetName.length) {
+        textEl.textContent = targetName.slice(0, charIndex + 1);
+        charIndex++;
+        const variableSpeed = 75 + (Math.random() * 45 - 20); // 55ms - 100ms realistic cadence
+        timeoutId = setTimeout(typeNextChar, variableSpeed);
+      } else {
+        finishTyping();
+      }
+    }
+    typeNextChar();
+  }, initialDelay);
 }
 
 /**
