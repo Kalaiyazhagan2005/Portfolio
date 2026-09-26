@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger.js';
 import { portfolioData } from './config/portfolioData.js';
 import { initCustomCursor } from './components/cursor.js';
 import { initHero3D } from './components/hero3D.js';
-import { initService3D } from './components/service3D.js';
 import { initProjects } from './components/projects.js';
 import { initContact } from './components/contact.js';
 import { initTravelingLetters } from './components/travelingLetters.js';
@@ -89,7 +88,7 @@ function renderMarquee() {
 }
 
 /**
- * Render Services Cards & Attach Three.js 3D Viewports
+ * Render Services Grid (Compact Architectural Cards)
  */
 function renderServices(cursor) {
   const container = document.querySelector('.services-list');
@@ -97,84 +96,32 @@ function renderServices(cursor) {
 
   container.innerHTML = portfolioData.services
     .map(
-      (s, idx) => `
-    <div class="service-card ${idx === 0 ? 'is-expanded' : ''}" data-service-id="${s.id}">
-      <div class="service-header">
-        <div class="service-meta-left">
-          <span class="service-id">${s.id}</span>
-          <h3 class="service-title">${s.title}</h3>
+      (s) => `
+    <article class="service-card" data-service-id="${s.id}">
+      <div class="service-card-header">
+        <div class="service-header-left">
+          <span class="service-num-badge">${s.id}</span>
+          <span class="service-category-pill">${s.code ? s.code.replace(/_/g, ' ') : 'ENGINEERING'}</span>
         </div>
-        <div class="service-expand-indicator">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+        <div class="service-status-dot" style="--accent: ${s.accentColor || '#0284c7'}"></div>
+      </div>
+      <h3 class="service-title">${s.title}</h3>
+      <p class="service-tagline">${s.tagline}</p>
+      <p class="service-desc">${s.description}</p>
+      <div class="service-deliverables-wrap">
+        <span class="service-deliverables-heading">Core Capabilities</span>
+        <div class="service-pills-row">
+          ${s.deliverables.map((d) => `<span class="service-spec-pill">${d}</span>`).join('')}
         </div>
       </div>
-      <div class="service-body-collapse">
-        <div class="service-content-grid">
-          <div class="service-desc-wrap">
-            <p class="service-tagline">${s.tagline}</p>
-            <p class="service-desc">${s.description}</p>
-            <ul class="deliverables-list">
-              ${s.deliverables.map((d) => `<li>${d}</li>`).join('')}
-            </ul>
-          </div>
-          <div class="service-3d-viewport">
-            <canvas class="service-3d-canvas" id="canvas-service-${s.id}"></canvas>
-            <span class="service-canvas-hint">Drag to inspect 3D model</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    </article>
   `
     )
     .join('');
 
-  const serviceCanvases = {};
-  portfolioData.services.forEach((s, idx) => {
-    const canvas = document.getElementById(`canvas-service-${s.id}`);
-    if (canvas) {
-      const instance = initService3D(canvas, s.shapeType, s.accentColor);
-      serviceCanvases[s.id] = instance;
-      // Pause collapsed cards on load to save GPU/CPU
-      if (idx > 0 && instance && instance.pause) {
-        instance.pause();
-      }
-    }
-  });
-
-  const cards = document.querySelectorAll('.service-card');
-  cards.forEach((card) => {
-    const header = card.querySelector('.service-header');
-    header.addEventListener('click', () => {
-      const wasExpanded = card.classList.contains('is-expanded');
-      const serviceId = card.getAttribute('data-service-id');
-
-      // Accordion mode: collapse others
-      cards.forEach((c) => {
-        c.classList.remove('is-expanded');
-        const cId = c.getAttribute('data-service-id');
-        if (serviceCanvases[cId] && serviceCanvases[cId].pause) {
-          serviceCanvases[cId].pause();
-        }
-      });
-
-      if (!wasExpanded) {
-        card.classList.add('is-expanded');
-        if (serviceCanvases[serviceId] && serviceCanvases[serviceId].resume) {
-          serviceCanvases[serviceId].resume();
-        }
-        // Refresh ScrollTrigger as accordion expansion changes page height
-        setTimeout(() => {
-          ScrollTrigger.refresh();
-        }, 320);
-      }
-
-      if (cursor && cursor.attachHoverListeners) {
-        cursor.attachHoverListeners();
-      }
-    });
-  });
+  if (cursor && cursor.attachHoverListeners) {
+    cursor.attachHoverListeners();
+  }
 }
 
 /**

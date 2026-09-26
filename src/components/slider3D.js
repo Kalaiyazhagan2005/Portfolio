@@ -37,9 +37,6 @@ export function init3DSlider(onProjectSelect) {
             <span class="card-num-badge">${p.number}</span>
             <span class="card-cat-badge">${p.category}</span>
           </div>
-          <div class="card-tap-hint">
-            <span>Tap to Switch</span>
-          </div>
         </div>
         <div class="card-content-pane">
           <div class="card-meta-top">
@@ -55,11 +52,22 @@ export function init3DSlider(onProjectSelect) {
             ${p.tags.map((t) => `<span class="card-tag">${t}</span>`).join('')}
           </div>
           <div class="card-action-bar">
-            <button class="card-inspect-btn" type="button" data-project-id="${p.id}">
-              <span>Inspect Architecture</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            ${p.liveUrl && p.liveUrl !== '#' ? `
+              <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="card-action-btn card-live-btn" aria-label="Visit live website for ${p.title}">
+                <span>Live Website</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            ` : ''}
+            ${p.githubUrl ? `
+              <a href="${p.githubUrl}" target="_blank" rel="noopener noreferrer" class="card-action-btn card-github-btn" aria-label="View source code on GitHub for ${p.title}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                <span>Code</span>
+              </a>
+            ` : ''}
+            <button class="card-action-btn card-inspect-btn" type="button" data-project-id="${p.id}" aria-label="View architecture case study for ${p.title}">
+              <span>Case Study</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
             </button>
-            <span class="card-click-advance-label">Click card to advance →</span>
           </div>
         </div>
       </div>
@@ -160,7 +168,7 @@ export function init3DSlider(onProjectSelect) {
     });
   });
 
-  // Dedicated "Inspect Architecture" button explicitly opens the modal
+  // Dedicated "Case Study" button explicitly opens the modal
   const inspectBtns = track.querySelectorAll('.card-inspect-btn');
   inspectBtns.forEach((btn) => {
     btn.addEventListener('click', (e) => {
@@ -173,11 +181,19 @@ export function init3DSlider(onProjectSelect) {
     });
   });
 
+  // Action links stop propagation
+  const actionLinks = track.querySelectorAll('.card-action-btn');
+  actionLinks.forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  });
+
   // Touching or Clicking ANYWHERE on a card changes/cycles the cards
   cards.forEach((card, idx) => {
     card.addEventListener('click', (e) => {
-      // If inspect button was clicked, don't change slide
-      if (e.target.closest('.card-inspect-btn')) return;
+      // If action buttons or links were clicked, don't change slide
+      if (e.target.closest('.card-action-btn') || e.target.closest('a') || e.target.closest('button')) return;
 
       if (idx !== activeIndex) {
         goToSlide(idx);
@@ -203,6 +219,7 @@ export function init3DSlider(onProjectSelect) {
   container.addEventListener(
     'touchstart',
     (e) => {
+      if (e.target.closest('.card-action-btn') || e.target.closest('a') || e.target.closest('button')) return;
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
       currentX = startX;
@@ -237,7 +254,7 @@ export function init3DSlider(onProjectSelect) {
   let mouseCurrentX = 0;
 
   container.addEventListener('mousedown', (e) => {
-    if (e.target.closest('.card-inspect-btn')) return;
+    if (e.target.closest('.card-action-btn') || e.target.closest('a') || e.target.closest('button')) return;
     isMouseDown = true;
     mouseStartX = e.clientX;
     mouseCurrentX = mouseStartX;
