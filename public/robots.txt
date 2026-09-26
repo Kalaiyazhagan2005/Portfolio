@@ -1,11 +1,18 @@
 # Robots.txt for https://kalaiyazhagan.in/
-# Optimized for Googlebot, Bingbot, Applebot, and AI Search Crawlers
+# Optimized for Googlebot, Googlebot-Favicons, Bingbot, Applebot, and AI Search Crawlers
 
 User-agent: *
 Allow: /
-Allow: /public/
+Allow: /favicon.ico
+Allow: /favicon-48x48.png
+Allow: /favicon.svg
+Allow: /apple-touch-icon.png
+Allow: /site.webmanifest
 Allow: /projects/
 Allow: /kalai-cutout.png
+
+User-agent: Googlebot-Favicons
+Allow: /
 
 # Sitemap Location
 Sitemap: https://kalaiyazhagan.in/sitemap.xml

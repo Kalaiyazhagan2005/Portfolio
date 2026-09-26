@@ -521,58 +521,44 @@ function init3DScrollAnimations() {
   // About 3D Sticky Viewport Card Entrance
   const about3DCard = document.querySelector('.about-3d-card-wrap');
   if (about3DCard && !isMobile) {
-    gsap.from(about3DCard, {
-      scrollTrigger: {
-        trigger: '.about-main-grid',
-        start: 'top 80%',
-        toggleActions: 'play none none reverse'
-      },
-      y: 40,
-      rotateY: 8,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-      transformPerspective: 1200
-    });
+    gsap.fromTo(
+      about3DCard,
+      { y: 30, opacity: 0.5 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power3.out',
+        clearProps: 'all',
+        scrollTrigger: {
+          trigger: '.about-main-grid',
+          start: 'top 92%',
+          once: true
+        }
+      }
+    );
   }
 
+  // Engineering Methodology Approach Cards (Prevent blank void gap)
   const approachCards = document.querySelectorAll('.approach-step-card');
   if (approachCards.length > 0) {
-    if (isMobile) {
-      gsap.fromTo(
-        approachCards,
-        { y: 16, opacity: 0.6 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.08,
-          duration: 0.6,
-          ease: 'power2.out',
-          clearProps: 'all',
-          scrollTrigger: {
-            trigger: '.about-approach-cards-grid',
-            start: 'top 96%',
-            once: true
-          }
-        }
-      );
-    } else {
-      gsap.from(approachCards, {
+    gsap.fromTo(
+      approachCards,
+      { y: 22, opacity: 0.4 },
+      {
+        y: 0,
+        opacity: 1,
+        stagger: 0.08,
+        duration: 0.65,
+        ease: 'power2.out',
+        clearProps: 'all',
         scrollTrigger: {
-          trigger: '.about-approach-cards-grid',
-          start: 'top 88%',
-          toggleActions: 'play none none reverse'
-        },
-        y: 32,
-        rotateX: 18,
-        z: -25,
-        opacity: 0,
-        stagger: 0.12,
-        duration: 0.85,
-        ease: 'power3.out',
-        transformPerspective: 1000
-      });
-    }
+          trigger: '.about-approach-block',
+          start: 'top 95%',
+          once: true
+        }
+      }
+    );
   }
 
   // 4. Services 3D Pill Cards Entrance Tilt

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <rect x="24" y="24" width="976" height="976" rx="220" fill="#0b0f19" stroke="#1e293b" stroke-width="8"/>
+  <text x="445" y="700" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="560" font-weight="700" fill="#ffffff" text-anchor="middle">K</text>
+  <circle cx="721" cy="648" r="48" fill="#0284c7"/>
+</svg>
