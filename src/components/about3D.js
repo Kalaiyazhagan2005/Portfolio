@@ -66,18 +66,66 @@ export function initAbout3D(canvasElement) {
   const coreGroup = new THREE.Group();
   masterGroup.add(coreGroup);
 
-  // Inner Glowing Nucleus (Illuminates floating shards when shattered)
-  const nucleusGeom = new THREE.SphereGeometry(0.35, 16, 16);
-  const nucleusMat = new THREE.MeshBasicMaterial({
-    color: 0x38bdf8,
-    transparent: true,
-    opacity: 0.95
-  });
-  const nucleusMesh = new THREE.Mesh(nucleusGeom, nucleusMat);
-  coreGroup.add(nucleusMesh);
+  // Layer A: Central Glowing Radiant SUN Core (Revealed when shattered)
+  const sunGroup = new THREE.Group();
+  coreGroup.add(sunGroup);
 
-  const nucleusLight = new THREE.PointLight(0x00f0ff, 1.8, 8);
-  nucleusMesh.add(nucleusLight);
+  // 1. Hot Solar Core Sphere (Bright radiant gold/white)
+  const sunCoreGeom = new THREE.SphereGeometry(0.38, 24, 24);
+  const sunCoreMat = new THREE.MeshBasicMaterial({
+    color: 0xfff6d0
+  });
+  const sunCoreMesh = new THREE.Mesh(sunCoreGeom, sunCoreMat);
+  sunGroup.add(sunCoreMesh);
+
+  // 2. Solar Corona Halo 1 (Warm intense golden-orange glow)
+  const corona1Geom = new THREE.SphereGeometry(0.52, 24, 24);
+  const corona1Mat = new THREE.MeshBasicMaterial({
+    color: 0xffaa00,
+    transparent: true,
+    opacity: 0.70,
+    blending: THREE.AdditiveBlending
+  });
+  const corona1Mesh = new THREE.Mesh(corona1Geom, corona1Mat);
+  sunGroup.add(corona1Mesh);
+
+  // 3. Solar Corona Halo 2 (Atmospheric radiant solar amber aura)
+  const corona2Geom = new THREE.SphereGeometry(0.70, 24, 24);
+  const corona2Mat = new THREE.MeshBasicMaterial({
+    color: 0xff5500,
+    transparent: true,
+    opacity: 0.38,
+    blending: THREE.AdditiveBlending
+  });
+  const corona2Mesh = new THREE.Mesh(corona2Geom, corona2Mat);
+  sunGroup.add(corona2Mesh);
+
+  // 4. Solar Prominence Flare Particles (Shimmering solar rays)
+  const solarFlareCount = 36;
+  const flareGeom = new THREE.BufferGeometry();
+  const flarePos = new Float32Array(solarFlareCount * 3);
+  for (let i = 0; i < solarFlareCount; i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(Math.random() * 2 - 1);
+    const rad = 0.44 + Math.random() * 0.32;
+    flarePos[i * 3] = rad * Math.sin(phi) * Math.cos(theta);
+    flarePos[i * 3 + 1] = rad * Math.sin(phi) * Math.sin(theta);
+    flarePos[i * 3 + 2] = rad * Math.cos(phi);
+  }
+  flareGeom.setAttribute('position', new THREE.BufferAttribute(flarePos, 3));
+  const flareMat = new THREE.PointsMaterial({
+    color: 0xffdd33,
+    size: 0.095,
+    transparent: true,
+    opacity: 0.95,
+    blending: THREE.AdditiveBlending
+  });
+  const flarePoints = new THREE.Points(flareGeom, flareMat);
+  sunGroup.add(flarePoints);
+
+  // 5. Radiant Solar PointLight
+  const sunLight = new THREE.PointLight(0xff9900, 3.2, 14);
+  sunGroup.add(sunLight);
 
   // Palette of rich, vibrant metallic facet materials
   const facetMaterials = [
@@ -283,9 +331,17 @@ export function initAbout3D(canvasElement) {
         ease: 'power2.out',
         overwrite: true
       });
-      gsap.to(nucleusLight, {
-        intensity: 4.2,
+      gsap.to(sunLight, {
+        intensity: 5.8,
         duration: 0.6,
+        overwrite: true
+      });
+      gsap.to(corona2Mesh.scale, {
+        x: 1.35,
+        y: 1.35,
+        z: 1.35,
+        duration: 0.6,
+        ease: 'power2.out',
         overwrite: true
       });
       gsap.to(cageMesh.scale, {
@@ -304,9 +360,17 @@ export function initAbout3D(canvasElement) {
         ease: 'elastic.out(1, 0.75)',
         overwrite: true
       });
-      gsap.to(nucleusLight, {
-        intensity: 1.8,
+      gsap.to(sunLight, {
+        intensity: 3.2,
         duration: 0.8,
+        overwrite: true
+      });
+      gsap.to(corona2Mesh.scale, {
+        x: 1,
+        y: 1,
+        z: 1,
+        duration: 0.8,
+        ease: 'power2.out',
         overwrite: true
       });
       gsap.to(cageMesh.scale, {
@@ -474,6 +538,13 @@ export function initAbout3D(canvasElement) {
 
     // Gentle core idle rotation
     coreGroup.rotation.y += delta * 0.22;
+
+    // Radiant glowing sun core pulse & solar corona spin
+    const sunPulse = 1.0 + Math.sin(elapsedTime * 3.6) * 0.05;
+    sunCoreMesh.scale.set(sunPulse, sunPulse, sunPulse);
+    corona1Mesh.rotation.y += delta * 0.65;
+    corona2Mesh.rotation.z -= delta * 0.45;
+    flarePoints.rotation.y += delta * 0.8;
 
     // Update Shatter / Reassemble Shards Position & Tumble only when animating or shattered
     const sp = shatterState.progress;

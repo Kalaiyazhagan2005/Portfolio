@@ -41,26 +41,60 @@ export function initContact() {
     }, 3200);
   }
 
-  // Interactive Contact Form Handling
+  // Interactive Contact Form Handling (Delivers directly to kalaiyazhagan34@gmail.com)
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = `<span>Transmitting...</span>`;
+      submitBtn.innerHTML = `<span>Sending to Email...</span>`;
       submitBtn.disabled = true;
 
-      setTimeout(() => {
-        submitBtn.innerHTML = `<span>✓ Message Dispatched</span>`;
-        submitBtn.style.background = '#78dcff';
-        showToast("Inquiry received. I'll get back to you within 24 hours.");
-        form.reset();
+      const name = document.getElementById('contact-name')?.value || '';
+      const email = document.getElementById('contact-email')?.value || '';
+      const subject = document.getElementById('contact-subject')?.value || '';
+      const message = document.getElementById('contact-message')?.value || '';
 
-        setTimeout(() => {
-          submitBtn.innerHTML = originalText;
-          submitBtn.style.background = '';
-          submitBtn.disabled = false;
-        }, 4000);
-      }, 1000);
+      try {
+        const response = await fetch('https://formsubmit.co/ajax/kalaiyazhagan34@gmail.com', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            subject,
+            message,
+            _subject: `New Portfolio Inquiry from ${name} (${subject})`
+          })
+        });
+
+        if (response.ok) {
+          submitBtn.innerHTML = `<span>✓ Inquiry Sent to Email!</span>`;
+          submitBtn.style.background = '#10b981';
+          submitBtn.style.color = '#ffffff';
+          showToast("Inquiry delivered directly to Kalaiyazhagan's inbox! I'll reply within 24 hours.");
+          form.reset();
+        } else {
+          throw new Error('FormSubmit error');
+        }
+      } catch (err) {
+        // Direct Email Fallback
+        const mailtoUrl = `mailto:kalaiyazhagan34@gmail.com?subject=${encodeURIComponent(`[Portfolio Inquiry] ${subject}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nRequirements / Message:\n${message}`)}`;
+        window.open(mailtoUrl, '_blank');
+        submitBtn.innerHTML = `<span>✓ Opened in Email App</span>`;
+        submitBtn.style.background = '#0284c7';
+        submitBtn.style.color = '#ffffff';
+        showToast("Opened your email app addressed to kalaiyazhagan34@gmail.com");
+      }
+
+      setTimeout(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.style.background = '';
+        submitBtn.style.color = '';
+        submitBtn.disabled = false;
+      }, 5000);
     });
   }
 
